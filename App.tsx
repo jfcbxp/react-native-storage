@@ -7,17 +7,20 @@ import {
   TouchableOpacity,
   View,
   Keyboard,
+  Modal,
+  Button,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
   const [input, setInput] = useState<string>();
   const [nome, setNome] = useState<string>();
+  const [modal, setModal] = useState<boolean>(false);
 
   const gravarNome = () => {
     setNome(input);
-    alert("Salvo com sucesso!");
     Keyboard.dismiss();
+    setModal(true);
   };
 
   useEffect(() => {
@@ -42,7 +45,34 @@ export default function App() {
         </TouchableOpacity>
         <StatusBar style="auto" />
       </View>
-      <Text style={styles.nome}>{nome}</Text>
+
+      <Modal animationType="slide" visible={modal} transparent={true}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "flex-end",
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
+          }}
+        >
+          <View
+            style={{
+              borderTopLeftRadius: 25,
+              borderTopRightRadius: 25,
+              backgroundColor: "#FFF",
+              opacity: 1,
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "stretch",
+              padding: 20,
+            }}
+          >
+            <Text style={styles.nome}>{nome}</Text>
+            <Button title="Sair" onPress={() => setModal(false)}></Button>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
